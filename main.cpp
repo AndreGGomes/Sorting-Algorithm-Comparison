@@ -22,7 +22,6 @@ int main()
     long long tempTime;
     bool sorted;
     int index = 0;
-    int choice;
 
     int testSize = 4; //quantidade de vetores que serão testados
 
@@ -41,49 +40,53 @@ int main()
         invertedSortedVectors.push_back(generateInvertedSortedVectors(pow(10,i)));
     }
     
-    for(index; index < 8; index++)
+    for(index; index < 9; index++)
     {
         switch (index){
             case 0:
-                testRandomCases("bubbleSort", bubbleSort, randomVectors, randomTable);
-                testNearlySortedCases("bubbleSort", bubbleSort, nearlySortedVectors, nearlySortedTable);
-                testInvertedCases("bubbleSort", bubbleSort, invertedSortedVectors, invertedSortedTable);
+                testRandomCasesAvg("bubbleSort", bubbleSort, randomVectors, randomTable);
+                testNearlySortedCasesAvg("bubbleSort", bubbleSort, nearlySortedVectors, nearlySortedTable);
+                testInvertedCasesAvg("bubbleSort", bubbleSort, invertedSortedVectors, invertedSortedTable);
                 break;
             case 1:
-                testRandomCases("insertionSort", insertionSort, randomVectors, randomTable);
-                testNearlySortedCases("insertionSort", insertionSort, nearlySortedVectors, nearlySortedTable);
-                testInvertedCases("insertionSort", insertionSort, invertedSortedVectors, invertedSortedTable);
+                testRandomCasesAvg("insertionSort", insertionSort, randomVectors, randomTable);
+                testNearlySortedCasesAvg("insertionSort", insertionSort, nearlySortedVectors, nearlySortedTable);
+                testInvertedCasesAvg("insertionSort", insertionSort, invertedSortedVectors, invertedSortedTable);
                 break;
             case 2:
-                testRandomCases("selectionSort", selectionSort, randomVectors, randomTable);
-                testNearlySortedCases("selectionSort", selectionSort, nearlySortedVectors, nearlySortedTable);
-                testInvertedCases("selectionSort", selectionSort, invertedSortedVectors, invertedSortedTable);
+                testRandomCasesAvg("selectionSort", selectionSort, randomVectors, randomTable);
+                testNearlySortedCasesAvg("selectionSort", selectionSort, nearlySortedVectors, nearlySortedTable);
+                testInvertedCasesAvg("selectionSort", selectionSort, invertedSortedVectors, invertedSortedTable);
                 break;
             case 3:
-                testRandomCases("mergeSort", mergeSortWrapper, randomVectors, randomTable);
-                testNearlySortedCases("mergeSort", mergeSortWrapper, nearlySortedVectors, nearlySortedTable);
-                testInvertedCases("mergeSort", mergeSortWrapper, invertedSortedVectors, invertedSortedTable);
+                testRandomCasesAvg("mergeSort", mergeSortWrapper, randomVectors, randomTable);
+                testNearlySortedCasesAvg("mergeSort", mergeSortWrapper, nearlySortedVectors, nearlySortedTable);
+                testInvertedCasesAvg("mergeSort", mergeSortWrapper, invertedSortedVectors, invertedSortedTable);
                 break;
             case 4:
-                testRandomCases("quickSortMiddle", quickSortMiddleWrapper, randomVectors, randomTable);
-                testNearlySortedCases("quickSortMiddle", quickSortMiddleWrapper, nearlySortedVectors, nearlySortedTable);
-                testInvertedCases("quickSortMiddle", quickSortMiddleWrapper, invertedSortedVectors, invertedSortedTable);
+                testRandomCasesAvg("quickSortMiddle", quickSortMiddleWrapper, randomVectors, randomTable);
+                testNearlySortedCasesAvg("quickSortMiddle", quickSortMiddleWrapper, nearlySortedVectors, nearlySortedTable);
+                testInvertedCasesAvg("quickSortMiddle", quickSortMiddleWrapper, invertedSortedVectors, invertedSortedTable);
                 break;
             case 5:
-                testRandomCases("quickSortLeft", quickSortLeftWrapper, randomVectors, randomTable);
-                testNearlySortedCases("quickSortLeft", quickSortLeftWrapper, nearlySortedVectors, nearlySortedTable);
-                testInvertedCases("quickSortLeft", quickSortLeftWrapper, invertedSortedVectors, invertedSortedTable);
+                testRandomCasesAvg("quickSortLeft", quickSortLeftWrapper, randomVectors, randomTable);
+                testNearlySortedCasesAvg("quickSortLeft", quickSortLeftWrapper, nearlySortedVectors, nearlySortedTable);
+                testInvertedCasesAvg("quickSortLeft", quickSortLeftWrapper, invertedSortedVectors, invertedSortedTable);
                 break;
             case 6:
-                testRandomCases("quickSortRight", quickSortRightWrapper, randomVectors, randomTable);
-                testNearlySortedCases("quickSortRight", quickSortRightWrapper, nearlySortedVectors, nearlySortedTable);
-                testInvertedCases("quickSortRight", quickSortRightWrapper, invertedSortedVectors, invertedSortedTable);
+                testRandomCasesAvg("quickSortRight", quickSortRightWrapper, randomVectors, randomTable);
+                testNearlySortedCasesAvg("quickSortRight", quickSortRightWrapper, nearlySortedVectors, nearlySortedTable);
+                testInvertedCasesAvg("quickSortRight", quickSortRightWrapper, invertedSortedVectors, invertedSortedTable);
                 break;
             case 7:
-                testRandomCases("bestQuickSort", bestQuickSortWrapper, randomVectors, randomTable);
-                testNearlySortedCases("bestQuickSort", bestQuickSortWrapper, nearlySortedVectors, nearlySortedTable);
-                testInvertedCases("bestQuickSort", bestQuickSortWrapper, invertedSortedVectors, invertedSortedTable);
+                testRandomCasesAvg("bestQuickSort", bestQuickSortWrapper, randomVectors, randomTable);
+                testNearlySortedCasesAvg("bestQuickSort", bestQuickSortWrapper, nearlySortedVectors, nearlySortedTable);
+                testInvertedCasesAvg("bestQuickSort", bestQuickSortWrapper, invertedSortedVectors, invertedSortedTable);
                 break;
+            case 8:
+                testRandomCasesAvg("std::sort", sortWrapper, randomVectors, randomTable);
+                testNearlySortedCasesAvg("std::sort", sortWrapper, nearlySortedVectors, nearlySortedTable);
+                testInvertedCasesAvg("std::sort", sortWrapper, invertedSortedVectors, invertedSortedTable );
             default:
                 break;
         }
@@ -111,5 +114,19 @@ int main()
     {
         printTableUnity(t);
     }
+
+    printTableTime(randomTable, "randomTableTime", testSize);
+    printTableTime(nearlySortedTable, "nearlySortedTableTime", testSize);
+    printTableTime(invertedSortedTable, "inverteSortedtableTime", testSize);
+    
+    printTableSwaps(randomTable, "randomTableSwaps", testSize);
+    printTableSwaps(nearlySortedTable, "nearlySortedTableSwaps", testSize);
+    printTableSwaps(invertedSortedTable, "inverteSortedtableSwaps", testSize);
+
+    printTableComps(randomTable, "randomTableComps", testSize);
+    printTableComps(nearlySortedTable, "nearlySortedTableSComps", testSize);
+    printTableComps(invertedSortedTable, "inverteSortedtableComps", testSize);
+
+    return 0;
 }
 

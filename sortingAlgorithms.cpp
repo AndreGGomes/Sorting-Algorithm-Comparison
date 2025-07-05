@@ -1,7 +1,11 @@
+#include <iostream>
+#include <algorithm>
 #include <vector>
+
 using namespace std;
 
-void bubbleSort(vector<int>& v, int& swaps)
+
+void bubbleSort(vector<int>& v, long long& swaps, long long& comparisons)
 {
     int n = v.size();
     for (int i = 0; i < n-1; i++)
@@ -9,6 +13,7 @@ void bubbleSort(vector<int>& v, int& swaps)
         bool swapped = false;
         for (int j = 0; j < n-i-1; j++)
         {
+            comparisons++;
             if (v[j] > v[j+1])
             {
                 swap(v[j], v[j+1]);
@@ -20,44 +25,48 @@ void bubbleSort(vector<int>& v, int& swaps)
     }
 }
 
-void insertionSort(vector<int>& v, int& swaps)
+
+void insertionSort(vector<int>& v, long long& swaps, long long& comparisons)
 {
     int n = v.size();
     for (int i = 1; i < n; i++)
     {
-        int key = v[i];
-        int j = i - 1;
-        while (j >= 0 && v[j] > key)
+        int j = i;
+        while (j > 0)
         {
-            v[j + 1] = v[j];
-            swaps++;
-            j--;
+            comparisons++;
+            if (v[j-1] > v[j])
+            {
+                swap(v[j], v[j-1]);
+                swaps++;
+                j--;
+            }
+            else break;
         }
-        v[j + 1] = key;
     }
 }
 
-void selectionSort(vector<int>& v, int& swaps)
+void selectionSort(vector<int>& v, long long& swaps, long long& comparisons)
 {
     int n = v.size();
     for (int i = 0; i < n-1; i++)
     {
-        int low_index = i;
+        int min_idx = i;
         for (int j = i+1; j < n; j++)
         {
-            if (v[j] < v[low_index])
-            {
-                low_index = j;
-            }
+            comparisons++;
+            if (v[j] < v[min_idx])
+                min_idx = j;
         }
-        if (i != low_index) {
-            swap(v[i], v[low_index]);
+        if (i != min_idx)
+        {
+            swap(v[i], v[min_idx]);
             swaps++;
         }
     }
 }
 
-void merge(vector<int>& v, int left, int mid, int right, int& swaps)
+void merge(vector<int>& v, int left, int mid, int right, long long& comparisons)
 {
     int n1 = mid - left + 1;
     int n2 = right - mid;
@@ -70,6 +79,7 @@ void merge(vector<int>& v, int left, int mid, int right, int& swaps)
     int i = 0, j = 0, k = left;
     while (i < n1 && j < n2)
     {
+        comparisons++;
         if (tempLeft[i] <= tempRight[j])
         {
             v[k] = tempLeft[i];
@@ -80,168 +90,168 @@ void merge(vector<int>& v, int left, int mid, int right, int& swaps)
             v[k] = tempRight[j];
             j++;
         }
-        swaps++; // Cada atribuição é considerada uma "troca" para merge sort
         k++;
     }
     while (i < n1)
     {
         v[k] = tempLeft[i];
-        i++; k++; swaps++;
+        i++; k++;
     }
     while (j < n2)
     {
         v[k] = tempRight[j];
-        j++; k++; swaps++;
+        j++; k++;
     }
 }
 
-void mergeSort(vector<int>& v, int left, int right, int& swaps)
+void mergeSort(vector<int>& v, int left, int right, long long& swaps, long long& comparisons)
 {
+    swaps = 0; //não são feitos swaps na mergeSort
     if (left >= right) return;
     int mid = (left + right) / 2;
-    mergeSort(v, left, mid, swaps);
-    mergeSort(v, mid + 1, right, swaps);
-    merge(v, left, mid, right, swaps);
+    mergeSort(v, left, mid, swaps, comparisons);
+    mergeSort(v, mid + 1, right, swaps, comparisons);
+    merge(v, left, mid, right, comparisons);
 }
 
-void mergeSortWrapper(vector<int>& v, int& swaps)
+void mergeSortWrapper(vector<int>& v, long long& swaps, long long& comparisons)
 {
-    mergeSort(v, 0, v.size() - 1, swaps);
+    mergeSort(v, 0, v.size() - 1, swaps, comparisons);
 }
 
-void quickSortMiddle(vector<int>& v, int left, int right, int& swaps)
+void quickSortMiddle(vector<int>& v, int left, int right, long long& swaps, long long& comparisons)
 {
     if (left >= right) return;
     int pivot = v[(left + right) / 2];
     int i = left, j = right;
     while (i <= j)
     {
-        while (v[i] < pivot) i++;
-        while (v[j] > pivot) j--;
-        if (i <= j) 
+        while (true) { comparisons++; if (!(v[i] < pivot)) break; i++; }
+        while (true) { comparisons++; if (!(v[j] > pivot)) break; j--; }
+        if (i <= j)
         {
             if (i != j)
-            { 
+            {
                 swap(v[i], v[j]);
                 swaps++;
             }
-            i++;
-            j--;
+            i++; j--;
         }
     }
-    quickSortMiddle(v, left, j, swaps);
-    quickSortMiddle(v, i, right, swaps);
+    quickSortMiddle(v, left, j, swaps, comparisons);
+    quickSortMiddle(v, i, right, swaps, comparisons);
 }
 
-void quickSortMiddleWrapper(vector<int>& v, int& swaps)
+void quickSortMiddleWrapper(vector<int>& v, long long& swaps, long long& comparisons)
 {
-    quickSortMiddle(v, 0, v.size() - 1, swaps);
+    quickSortMiddle(v, 0, v.size() - 1, swaps, comparisons);
 }
 
-void quickSortLeft(vector<int>& v, int left, int right, int& swaps)
+void quickSortLeft(vector<int>& v, int left, int right, long long& swaps, long long& comparisons)
 {
     if (left >= right) return;
     int pivot = v[left];
     int i = left, j = right;
     while (i <= j)
     {
-        while (v[i] < pivot) i++;
-        while (v[j] > pivot) j--;
-        if (i <= j) 
+        while (true) { comparisons++; if (!(v[i] < pivot)) break; i++; }
+        while (true) { comparisons++; if (!(v[j] > pivot)) break; j--; }
+        if (i <= j)
         {
             if (i != j)
             {
                 swap(v[i], v[j]);
                 swaps++;
             }
-            i++;
-            j--;
+            i++; j--;
         }
     }
-    quickSortLeft(v, left, j, swaps);
-    quickSortLeft(v, i, right, swaps);
+    quickSortLeft(v, left, j, swaps, comparisons);
+    quickSortLeft(v, i, right, swaps, comparisons);
 }
 
-void quickSortLeftWrapper(vector<int>& v, int& swaps)
+void quickSortLeftWrapper(vector<int>& v, long long& swaps, long long& comparisons)
 {
-    quickSortLeft(v, 0, v.size() - 1, swaps);
+    quickSortLeft(v, 0, v.size() - 1, swaps, comparisons);
 }
 
-void quickSortRight(vector<int>& v, int left, int right, int& swaps)
+void quickSortRight(vector<int>& v, int left, int right, long long& swaps, long long& comparisons)
 {
     if (left >= right) return;
     int pivot = v[right];
     int i = left, j = right;
     while (i <= j)
     {
-        while (v[i] < pivot) i++;
-        while (v[j] > pivot) j--;
-        if (i <= j) 
+        while (true) { comparisons++; if (!(v[i] < pivot)) break; i++; }
+        while (true) { comparisons++; if (!(v[j] > pivot)) break; j--; }
+        if (i <= j)
         {
-            if (i != j) { swap(v[i], v[j]); swaps++; }
+            if (i != j)
+            {
+                swap(v[i], v[j]);
+                swaps++;
+            }
             i++; j--;
         }
     }
-    quickSortRight(v, left, j, swaps);
-    quickSortRight(v, i, right, swaps);
+    quickSortRight(v, left, j, swaps, comparisons);
+    quickSortRight(v, i, right, swaps, comparisons);
 }
 
-void quickSortRightWrapper(vector<int>& v, int& swaps)
+void quickSortRightWrapper(vector<int>& v, long long& swaps, long long& comparisons)
 {
-    quickSortRight(v, 0, v.size() - 1, swaps);
+    quickSortRight(v, 0, v.size() - 1, swaps, comparisons);
 }
 
-void bestQuickSort(vector<int>& v, int& swaps, int low = 0, int high = -1)
+void bestQuickSort(vector<int>& v, long long& swaps, long long& comparisons, int low = 0, int high = -1)
 {
     if (high == -1) high = v.size() - 1;
     if (high - low < 16)
     {
         for (int i = low + 1; i <= high; i++)
         {
-            int key = v[i];
-            int j = i - 1;
-            while (j >= low && v[j] > key)
+            int j = i;
+            while (j > low)
             {
-                v[j + 1] = v[j];
-                swaps++;
-                j--;
+                comparisons++;
+                if (v[j-1] > v[j])
+                {
+                    swap(v[j], v[j-1]);
+                    swaps++;
+                    j--;
+                }
+                else break;
             }
-            v[j + 1] = key;
         }
         return;
     }
     int mid = low + (high - low) / 2;
-    if (v[mid] < v[low])
-    {
-        swap(v[low], v[mid]);
-        swaps++;
-    }
-    if (v[high] < v[low])
-    {
-        swap(v[low], v[high]);
-        swaps++;
-    }
-    if (v[mid] < v[high])
-    {
-        swap(v[mid], v[high]);
-        swaps++;
-    }
+    comparisons++; if (v[mid] < v[low]) { swap(v[low], v[mid]); swaps++; }
+    comparisons++; if (v[high] < v[low]) { swap(v[low], v[high]); swaps++; }
+    comparisons++; if (v[mid] < v[high]) { swap(v[mid], v[high]); swaps++; }
     int pivot = v[high];
     int i = low - 1;
     int j = high + 1;
     while (true)
     {
-        do { i++; } while (v[i] < pivot);
-        do { j--; } while (v[j] > pivot);
+        do { i++; comparisons++; } while (v[i] < pivot);
+        do { j--; comparisons++; } while (v[j] > pivot);
         if (i >= j) break;
         swap(v[i], v[j]);
         swaps++;
     }
-    bestQuickSort(v, swaps, low, j);
-    bestQuickSort(v, swaps, j + 1, high);
+    bestQuickSort(v, swaps, comparisons, low, j);
+    bestQuickSort(v, swaps, comparisons, j + 1, high);
 }
 
-void bestQuickSortWrapper(vector<int>& v, int& swaps)
+void bestQuickSortWrapper(vector<int>& v, long long& swaps, long long& comparisons)
 {
-    bestQuickSort(v, swaps);
+    bestQuickSort(v, swaps, comparisons);
+}
+
+void sortWrapper(vector<int>& v, long long& swaps, long long& comparisons)
+{
+    swaps = 0;
+    comparisons = 0;
+    sort(v.begin(), v.end());
 }
