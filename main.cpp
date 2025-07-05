@@ -40,7 +40,7 @@ int main()
         invertedSortedVectors.push_back(generateInvertedSortedVectors(pow(10,i)));
     }
     
-    for(index; index < 9; index++)
+    for(index; index < 9; index++) //testa os algoritmos de ordenação, sendo cada case um algoritmo diferente
     {
         switch (index){
             case 0:
@@ -92,6 +92,7 @@ int main()
         }
     }
 
+    //essa parte é apenas para visualizar os resultados no terminal, não sendo necessária para o funcionamento do programa
     cout << "----------------------------------------" << endl;
     cout << "Random" << endl;
     for(tableUnity t : randomTable)
@@ -115,6 +116,7 @@ int main()
         printTableUnity(t);
     }
 
+    //essa parte cria os arquivos CSV com os resultados dos testes prontos para serem importados para algum leitor de CSV. (usei o Google Sheets)
     printTableTime(randomTable, "randomTableTime", testSize);
     printTableTime(nearlySortedTable, "nearlySortedTableTime", testSize);
     printTableTime(invertedSortedTable, "inverteSortedtableTime", testSize);
@@ -130,3 +132,6 @@ int main()
     return 0;
 }
 
+//NOTAS:
+//fiquei com preguiça de fazer os header files (odeio os .hpps)
+//mas pretendo fazer em breve, para deixar o código mais organizado no meu github ;)

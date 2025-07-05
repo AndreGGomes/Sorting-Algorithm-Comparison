@@ -8,7 +8,7 @@
 using namespace std;
 using namespace std::chrono;
 
-struct tableUnity
+struct tableUnity //struct que armazena os dados de cada teste
 {
     string name;
     int vectorSize;
@@ -28,7 +28,7 @@ struct tableUnity
     }
 };
 
-vector<int> generateRandomVector(size_t n)
+vector<int> generateRandomVector(size_t n) //função que gera um vetor aleatorio de tamanho n
 {
     vector<int> vetor(n);
     random_device rd; 
@@ -41,7 +41,7 @@ vector<int> generateRandomVector(size_t n)
     return vetor;
 }
 
-void printVector(vector<int> v)
+void printVector(vector<int> v) //função auxiliar utilizada no debug
 {
     for (int num : v)
     {
@@ -66,14 +66,14 @@ long long testAlgorithm(void (*sortFunction)(vector<int>&, long long&, long long
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     return duration.count();
-}
+} //essa função cronometra o tempo de execução do algoritmo, dando a saída em microsegundos
 
 bool isSorted(vector<int> v)
 {
     return is_sorted(v.begin(), v.end());
 }
 
-vector<int> generateNearlySortedVector(size_t n)
+vector<int> generateNearlySortedVector(size_t n) //função que gera um vetor quase ordenado de tamanho n
 {
     if (n == 0) return {};
     vector<int> v(n);
@@ -92,7 +92,7 @@ vector<int> generateNearlySortedVector(size_t n)
     return v;
 }
 
-vector<int> generateInvertedSortedVectors(size_t n)
+vector<int> generateInvertedSortedVectors(size_t n) //função que gera um vetor inversamente ordenado
 {
     vector<int> v(n);
     iota(v.begin(), v.end(), 1);
@@ -100,14 +100,14 @@ vector<int> generateInvertedSortedVectors(size_t n)
     return v;
 }
 
-void testRandomCasesAvg(
+void testRandomCasesAvg( //função que testa um algoritmo de ordenação em vetores aleatorios
     const string& sortName,
     void (*sortFunction)(vector<int>&, long long&, long long&),
     const vector<vector<int>>& randomVectors,
     vector<tableUnity>& randomTable
 )
 {
-    int repetitions = 5;
+    int repetitions = 5; //quantidade de testes feitas
     for(int i = 0; i < randomVectors.size(); i++)
     {
         std::vector<long long> times;
@@ -127,9 +127,9 @@ void testRandomCasesAvg(
         sort(times.begin(), times.end());
         sort(swapsVec.begin(), swapsVec.end());
         sort(compsVec.begin(), compsVec.end());
-        long long medianTime = times[repetitions / 2];
-        long long medianSwaps = swapsVec[repetitions / 2];
-        long long medianComps = compsVec[repetitions / 2];
+        long long medianTime = times[repetitions / 2];      //pegamos a mediana dos testes feitos
+        long long medianSwaps = swapsVec[repetitions / 2];  //pegamos a mediana dos testes feitos
+        long long medianComps = compsVec[repetitions / 2];  //pegamos a mediana dos testes feitos
         randomTable.push_back(tableUnity(
             sortName,
             pow(10, i+1),
@@ -141,7 +141,7 @@ void testRandomCasesAvg(
     }
 }
 
-void testNearlySortedCasesAvg(
+void testNearlySortedCasesAvg( //função que testa um algoritmo de ordenação em vetores parcialmente ordenados
     const string& sortName,
     void (*sortFunction)(vector<int>&, long long&, long long&),
     const vector<vector<int>>& nearlySortedVectors,
@@ -168,9 +168,9 @@ void testNearlySortedCasesAvg(
         }
         std::sort(times.begin(), times.end());
         std::sort(swapsVec.begin(), swapsVec.end());
-        long long medianTime = times[repetitions / 2];
-        long long medianSwaps = swapsVec[repetitions / 2];
-        long long medianComps = compsVec[repetitions / 2];
+        long long medianTime = times[repetitions / 2];         //novamente, usando a mediana dos testes feitos
+        long long medianSwaps = swapsVec[repetitions / 2];     //novamente, usando a mediana dos testes feitos
+        long long medianComps = compsVec[repetitions / 2];     //novamente, usando a mediana dos testes feitos
         nearlySortedTable.push_back(tableUnity(
             sortName,
             pow(10, i+1),
@@ -182,7 +182,7 @@ void testNearlySortedCasesAvg(
     }
 }
 
-void testInvertedCasesAvg(
+void testInvertedCasesAvg( //função que testa um algoritmo de ordenação em vetores inversamente ordenados
     const string& sortName,
     void (*sortFunction)(vector<int>&, long long&, long long&),
     const vector<vector<int>>& invertedSortedVectors,
@@ -209,9 +209,9 @@ void testInvertedCasesAvg(
         sort(times.begin(), times.end());
         sort(swapsVec.begin(), swapsVec.end());
         sort(compsVec.begin(), compsVec.end());
-        long long medianTime = times[repetitions / 2];
-        long long medianSwaps = swapsVec[repetitions / 2];
-        long long medianComps = compsVec[repetitions / 2];
+        long long medianTime = times[repetitions / 2];      //novamente, usando a mediana dos testes feitos
+        long long medianSwaps = swapsVec[repetitions / 2];  //novamente, usando a mediana dos testes feitos
+        long long medianComps = compsVec[repetitions / 2];  //novamente, usando a mediana dos testes feitos
         invertedSortedTable.push_back(tableUnity(
             sortName,
             pow(10, i+1),
@@ -223,7 +223,7 @@ void testInvertedCasesAvg(
     }
 }
 
-void printTableTime(vector<tableUnity> table, string name, int repetitions)
+void printTableTime(vector<tableUnity> table, string name, int repetitions) //função que cria a tabela de tempos de execução × tamanho do vetor
 {
     ofstream csvFile("tables/" + name + ".csv");
     int algCount = table.size() / repetitions;
@@ -252,7 +252,7 @@ void printTableTime(vector<tableUnity> table, string name, int repetitions)
     }
 }
 
-void printTableSwaps(vector<tableUnity> table, string name, int repetitions)
+void printTableSwaps(vector<tableUnity> table, string name, int repetitions)//função que cria a tabela de trocas × tamanho do vetor
 {
     ofstream csvFile("tables/" + name + ".csv");
     int algCount = table.size() / repetitions;
@@ -282,7 +282,7 @@ void printTableSwaps(vector<tableUnity> table, string name, int repetitions)
     }
 }
 
-void printTableComps(vector<tableUnity> table, string name, int repetitions)
+void printTableComps(vector<tableUnity> table, string name, int repetitions)//função que cria a tabela de comps × tamanho do vetor
 {
     ofstream csvFile("tables/" + name + ".csv");
     int algCount = table.size() / repetitions;

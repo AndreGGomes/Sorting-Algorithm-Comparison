@@ -4,8 +4,9 @@
 
 using namespace std;
 
-
-void bubbleSort(vector<int>& v, long long& swaps, long long& comparisons)
+//note que em geral, as comparações só são aumentadas quando há uma comparação entre ELEMENTOS do vetor, e não quando há comparações nos parenteses do for-loop por exemplo
+//As trocas só são aumentadas quando há uma troca de ELEMENTOS do vetor, e não quando há uma troca de variáveis auxiliares, como no caso do insertionSort por exemplo
+void bubbleSort(vector<int>& v, long long& swaps, long long& comparisons) //bubbleSort padrão, porém com a contagem de trocas e comparações
 {
     int n = v.size();
     for (int i = 0; i < n-1; i++)
@@ -26,7 +27,7 @@ void bubbleSort(vector<int>& v, long long& swaps, long long& comparisons)
 }
 
 
-void insertionSort(vector<int>& v, long long& swaps, long long& comparisons)
+void insertionSort(vector<int>& v, long long& swaps, long long& comparisons) //insertionSort padrão, porém com a contagem de trocas e comparações
 {
     int n = v.size();
     for (int i = 1; i < n; i++)
@@ -46,7 +47,7 @@ void insertionSort(vector<int>& v, long long& swaps, long long& comparisons)
     }
 }
 
-void selectionSort(vector<int>& v, long long& swaps, long long& comparisons)
+void selectionSort(vector<int>& v, long long& swaps, long long& comparisons)//selectionSort padrão, porém com a contagem de trocas e comparações
 {
     int n = v.size();
     for (int i = 0; i < n-1; i++)
@@ -66,7 +67,7 @@ void selectionSort(vector<int>& v, long long& swaps, long long& comparisons)
     }
 }
 
-void merge(vector<int>& v, int left, int mid, int right, long long& comparisons)
+void merge(vector<int>& v, int left, int mid, int right, long long& comparisons) //merge, a função auxiliar do mergeSort, porem levando em consideração as comparações
 {
     int n1 = mid - left + 1;
     int n2 = right - mid;
@@ -104,9 +105,9 @@ void merge(vector<int>& v, int left, int mid, int right, long long& comparisons)
     }
 }
 
-void mergeSort(vector<int>& v, int left, int right, long long& swaps, long long& comparisons)
+void mergeSort(vector<int>& v, int left, int right, long long& swaps, long long& comparisons) //mergeSort padrão, porém com a contagem de trocas e comparações
 {
-    swaps = 0; //não são feitos swaps na mergeSort
+    swaps = 0; //não são feitas trocas na mergeSort
     if (left >= right) return;
     int mid = (left + right) / 2;
     mergeSort(v, left, mid, swaps, comparisons);
@@ -114,12 +115,12 @@ void mergeSort(vector<int>& v, int left, int right, long long& swaps, long long&
     merge(v, left, mid, right, comparisons);
 }
 
-void mergeSortWrapper(vector<int>& v, long long& swaps, long long& comparisons)
+void mergeSortWrapper(vector<int>& v, long long& swaps, long long& comparisons) //apenas um wrapper para facilitar a chamada da mergeSort nas funções de testar os algoritmos
 {
     mergeSort(v, 0, v.size() - 1, swaps, comparisons);
 }
 
-void quickSortMiddle(vector<int>& v, int left, int right, long long& swaps, long long& comparisons)
+void quickSortMiddle(vector<int>& v, int left, int right, long long& swaps, long long& comparisons) //quickSort com o pivô sendo o elemento do meio, porém com a contagem de trocas e comparações
 {
     if (left >= right) return;
     int pivot = v[(left + right) / 2];
@@ -142,12 +143,12 @@ void quickSortMiddle(vector<int>& v, int left, int right, long long& swaps, long
     quickSortMiddle(v, i, right, swaps, comparisons);
 }
 
-void quickSortMiddleWrapper(vector<int>& v, long long& swaps, long long& comparisons)
+void quickSortMiddleWrapper(vector<int>& v, long long& swaps, long long& comparisons) //apenas um wrapper para facilitar a chamada da quickSortMiddle nas funções de testar os algoritmos
 {
     quickSortMiddle(v, 0, v.size() - 1, swaps, comparisons);
 }
 
-void quickSortLeft(vector<int>& v, int left, int right, long long& swaps, long long& comparisons)
+void quickSortLeft(vector<int>& v, int left, int right, long long& swaps, long long& comparisons) //quickSort com o pivô sendo o elemento da esquerda, porém com a contagem de trocas e comparações
 {
     if (left >= right) return;
     int pivot = v[left];
@@ -170,12 +171,12 @@ void quickSortLeft(vector<int>& v, int left, int right, long long& swaps, long l
     quickSortLeft(v, i, right, swaps, comparisons);
 }
 
-void quickSortLeftWrapper(vector<int>& v, long long& swaps, long long& comparisons)
+void quickSortLeftWrapper(vector<int>& v, long long& swaps, long long& comparisons) //apenas um wrapper para facilitar a chamada da quickSortLeft nas funções de testar os algoritmos
 {
     quickSortLeft(v, 0, v.size() - 1, swaps, comparisons);
 }
 
-void quickSortRight(vector<int>& v, int left, int right, long long& swaps, long long& comparisons)
+void quickSortRight(vector<int>& v, int left, int right, long long& swaps, long long& comparisons) //quickSort com o pivô sendo o elemento da direita, porém com a contagem de trocas e comparações
 {
     if (left >= right) return;
     int pivot = v[right];
@@ -198,12 +199,12 @@ void quickSortRight(vector<int>& v, int left, int right, long long& swaps, long 
     quickSortRight(v, i, right, swaps, comparisons);
 }
 
-void quickSortRightWrapper(vector<int>& v, long long& swaps, long long& comparisons)
+void quickSortRightWrapper(vector<int>& v, long long& swaps, long long& comparisons)  //apenas um wrapper para facilitar a chamada da quickSortRight nas funções de testar os algoritmos
 {
     quickSortRight(v, 0, v.size() - 1, swaps, comparisons);
 }
 
-void bestQuickSort(vector<int>& v, long long& swaps, long long& comparisons, int low = 0, int high = -1)
+void bestQuickSort(vector<int>& v, long long& swaps, long long& comparisons, int low = 0, int high = -1) //bestQuickSort é o apelido para a quickSort com o pivô mediana de 3
 {
     if (high == -1) high = v.size() - 1;
     if (high - low < 16)
@@ -226,16 +227,39 @@ void bestQuickSort(vector<int>& v, long long& swaps, long long& comparisons, int
         return;
     }
     int mid = low + (high - low) / 2;
-    comparisons++; if (v[mid] < v[low]) { swap(v[low], v[mid]); swaps++; }
-    comparisons++; if (v[high] < v[low]) { swap(v[low], v[high]); swaps++; }
-    comparisons++; if (v[mid] < v[high]) { swap(v[mid], v[high]); swaps++; }
+    comparisons++;
+    if (v[mid] < v[low])
+    {
+        swap(v[low], v[mid]);
+        swaps++;
+    }
+    comparisons++;
+    if (v[high] < v[low])
+    {
+        swap(v[low], v[high]);
+        swaps++;
+    }
+    comparisons++;
+    if (v[mid] < v[high])
+    {
+        swap(v[mid], v[high]);
+        swaps++;
+    }
     int pivot = v[high];
     int i = low - 1;
     int j = high + 1;
     while (true)
     {
-        do { i++; comparisons++; } while (v[i] < pivot);
-        do { j--; comparisons++; } while (v[j] > pivot);
+        do
+        {
+            i++;
+            comparisons++;
+        } while (v[i] < pivot);
+        do
+        {
+            j--;
+            comparisons++;
+        } while (v[j] > pivot);
         if (i >= j) break;
         swap(v[i], v[j]);
         swaps++;
@@ -244,14 +268,14 @@ void bestQuickSort(vector<int>& v, long long& swaps, long long& comparisons, int
     bestQuickSort(v, swaps, comparisons, j + 1, high);
 }
 
-void bestQuickSortWrapper(vector<int>& v, long long& swaps, long long& comparisons)
+void bestQuickSortWrapper(vector<int>& v, long long& swaps, long long& comparisons) //apenas um wrapper para facilitar a chamada da bestQuickSort nas funções de testar os algoritmos
 {
     bestQuickSort(v, swaps, comparisons);
 }
 
-void sortWrapper(vector<int>& v, long long& swaps, long long& comparisons)
+void sortWrapper(vector<int>& v, long long& swaps, long long& comparisons) //apenas um wrapper para facilitar a chamada da std::sort nas funções de testar os algoritmos
 {
-    swaps = 0;
-    comparisons = 0;
+    swaps = 0; //não é possivel testar as trocas da std::sort, pois ela não fornece essa informação
+    comparisons = 0; //nao é possivel testar as comparações da std::sort, pois ela não fornece essa informação
     sort(v.begin(), v.end());
 }
